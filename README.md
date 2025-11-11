@@ -100,7 +100,7 @@ The repository contains the standard structure for a Java Maven web application,
 <table border="1" cellspacing="0" cellpadding="6">
   <tr>
     <th>File/Directory</th>
-    <th></th>
+    <th>Description</th>
   </tr>
   <tr>
     <td>src/</td>
