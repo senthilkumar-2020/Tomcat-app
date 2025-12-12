@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         SERVER_IP    = '65.0.132.16'
-        SSH_CRED_ID  = 'node-CICD-key'
+        SSH_CRED_ID  = 'ec2-user'
         TOMCAT_PATH  = '/opt/tomcat/webapps'
         TOMCAT_SVC   = 'tomcat'
     }
@@ -30,8 +30,8 @@ pipeline {
                 sshagent([SSH_CRED_ID]) {
                     sh """
                         WAR_FILE=\$(ls target/*.war | head -n 1)
-                        scp -o StrictHostKeyChecking=no \$WAR_FILE ubuntu@${SERVER_IP}:/tmp/
-                        ssh -o StrictHostKeyChecking=no ubuntu@${SERVER_IP} '
+                        scp -o StrictHostKeyChecking=no \$WAR_FILE ec2-user@${SERVER_IP}:/tmp/
+                        ssh -o StrictHostKeyChecking=no ec2-user@${SERVER_IP} '
                             sudo rm -rf ${TOMCAT_PATH}/*
                             sudo mv /tmp/*.war ${TOMCAT_PATH}/ROOT.war
                             sudo chown tomcat:tomcat ${TOMCAT_PATH}/ROOT.war
