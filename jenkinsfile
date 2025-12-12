@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         SERVER_IP   = "65.0.132.16"
-        SSH_USER    = "ec2-user"               // FIXED (Amazon Linux user)
+        SSH_USER    = "ec2-user"
         SSH_CRED_ID = "node-CICD-key"
         TOMCAT_PATH = "/opt/tomcat/webapps"
         TOMCAT_SVC  = "tomcat"
@@ -32,21 +32,21 @@ pipeline {
         stage('Deploy to Tomcat') {
             steps {
                 sshagent([env.SSH_CRED_ID]) {
-                    sh """
-                        WAR_FILE=\$(ls target/*.war | head -n 1)
+                    sh '''
+                        WAR_FILE=$(ls target/*.war | head -n 1)
 
                         echo "Uploading WAR file to server..."
-                        scp -o StrictHostKeyChecking=no \$WAR_FILE ${SSH_USER}@${SERVER_IP}:/tmp/
+                        scp -o StrictHostKeyChecking=no "$WAR_FILE" ec2-user@65.0.132.16:/tmp/
 
                         echo "Deploying to Tomcat..."
-                        ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SERVER_IP} << EOF
-                            sudo systemctl stop ${TOMCAT_SVC}
-                            sudo rm -rf ${TOMCAT_PATH}/studentapp*
-                            sudo mv /tmp/\$(basename \$WAR_FILE) ${TOMCAT_PATH}/studentapp.war
-                            sudo systemctl start ${TOMCAT_SVC}
-                            sudo systemctl status ${TOMCAT_SVC} -l --no-pager
-                        EOF
-                    """
+                        ssh -o StrictHostKeyChecking=no ec2-user@65.0.132.16 << 'EOF'
+sudo systemctl stop tomcat
+sudo rm -rf /opt/tomcat/webapps/studentapp*
+sudo mv /tmp/studentapp-2.2-SNAPSHOT.war /opt/tomcat/webapps/studentapp.war
+sudo systemctl start tomcat
+sudo systemctl status tomcat -l --no-pager
+EOF
+                    '''
                 }
             }
         }
