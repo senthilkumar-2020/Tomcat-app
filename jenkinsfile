@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         SERVER_IP    = '65.0.132.16'
-        SSH_CRED_ID  = 'ec2-user'
+        SSH_CRED_ID  = 'node-CICD-key'
         TOMCAT_PATH  = '/opt/tomcat/webapps'
         TOMCAT_SVC   = 'tomcat'
     }
