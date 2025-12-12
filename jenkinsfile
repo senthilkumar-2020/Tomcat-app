@@ -6,10 +6,10 @@ pipeline {
     }
 
     environment {
-        SERVER_IP    = '54.169.71.93'
+        SERVER_IP    = '65.0.132.16'
         SSH_CRED_ID  = 'node-CICD-key'
         TOMCAT_PATH  = '/opt/tomcat/webapps'
-        TOMCAT_SVC   = 'tomcat10'
+        TOMCAT_SVC   = 'tomcat'
     }
 
     stages {
